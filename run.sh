@@ -24,3 +24,23 @@ for i in compiled/*.fst; do
 	echo "Creating image: images/$(basename $i '.fst').pdf"
    fstdraw --portrait --isymbols=syms.txt --osymbols=syms.txt $i | dot -Tpdf > images/$(basename $i '.fst').pdf
 done
+
+# TESTING
+
+#3 - presents the output with the tokens concatenated (uses a different syms on the output)
+fst2word() {
+	awk '{if(NF>=3){printf("%s",$3)}}END{printf("\n")}'
+}
+
+trans=mix2numerical.fst
+echo "***********************************************************"
+echo "Testing mix2num  (output is a string  using 'syms-out.txt')"
+echo "***********************************************************"
+for w in "NOV/19/2020"; do
+    res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
+                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
+                       fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
+    echo "$w = $res"
+done
+
+echo "The end"
