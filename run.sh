@@ -12,16 +12,17 @@ done
 
 # ############ CORE OF THE PROJECT  ############
 
-fstconcat compiled/aux_day.fst compiled/aux_slash.fst | fstrmepsilon | fstarcsort > compiled/tmp_day.fst
-fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/tmp_day.fst | dot -Tpdf > images/tmp_day.pdf
+fstconcat compiled/aux_day.fst compiled/aux_slash.fst | fstrmepsilon | fstarcsort > compiled/tmp_day.fst # dia/
+#fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/tmp_day.fst | dot -Tpdf > images/tmp_day.pdf
+fstconcat compiled/mmm2mm.fst compiled/aux_slash.fst | fstrmepsilon | fstarcsort > compiled/tmp_month.fst # mes/
 
-fstconcat compiled/mmm2mm.fst compiled/aux_slash.fst | fstrmepsilon | fstarcsort > compiled/tmp_month.fst
-fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/tmp_month.fst | dot -Tpdf > images/tmp_month.pdf
+#fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/tmp_month.fst | dot -Tpdf > images/tmp_month.pdf
 
-fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstrmepsilon | fstarcsort > compiled/tmp_monthday.fst
-fstconcat compiled/tmp_monthday.fst compiled/aux_year.fst | fstrmepsilon | fstarcsort > compiled/mix2numerical.fst
 
-fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/mix2numerical.fst | dot -Tpdf > images/mix2numerical.pdf
+fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstrmepsilon | fstarcsort > compiled/tmp_monthday.fst # mes/dia/
+fstconcat compiled/tmp_monthday.fst compiled/aux_year.fst | fstrmepsilon | fstarcsort > compiled/mix2numerical.fst # mes/dia/ano
+
+#fstdraw --isymbols=syms.txt --osymbols=syms.txt --portrait compiled/mix2numerical.fst | dot -Tpdf > images/mix2numerical.pdf
 
 
 # ############ generate PDFs  ############
