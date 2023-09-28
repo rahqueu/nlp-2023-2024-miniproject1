@@ -1,7 +1,6 @@
 #!/bin/bash
 
 mkdir -p compiled images
-
 rm -f ./compiled/*.fst ./images/*.pdf
 
 # ############ Compile source transducers ############
