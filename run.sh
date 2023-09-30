@@ -28,8 +28,12 @@ fstconcat compiled/tmp_pt2en3.fst compiled/aux_year.fst | fstarcsort > compiled/
 
 # 4
 
-fstreverse compiled/pt2en.fst > compiled/en2pt.fst # not working for some reason...
+fstinvert compiled/month_pt2en.fst > compiled/month_en2pt.fst
 
+fstconcat compiled/month_en2pt.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp_en2pt1.fst
+fstconcat compiled/aux_day.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp_en2pt2.fst
+fstconcat compiled/tmp_en2pt1.fst compiled/tmp_en2pt2.fst | fstarcsort > compiled/tmp_en2pt3.fst
+fstconcat compiled/tmp_en2pt3.fst compiled/aux_year.fst | fstarcsort > compiled/en2pt.fst
 
 #8
 
