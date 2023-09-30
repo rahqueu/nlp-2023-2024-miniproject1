@@ -51,6 +51,24 @@ for i in compiled/*.fst; do
 done
 
 # TESTING
+echo " "
+
+
+#1 - generates files
+
+echo "***********************************************************"
+echo "Testing mix2numerical.fst (the output is a transducer: fst and pdf)"
+echo "***********************************************************"
+for w in compiled/t-*.fst; do
+    fstcompose $w compiled/mix2numerical.fst | fstshortestpath | fstproject --project_type=output |
+                  fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
+done
+for i in compiled/t-*-out.fst; do
+	echo "Creating image: images/$(basename $i '.fst').pdf"
+    echo " "
+   fstdraw --portrait --isymbols=syms.txt --osymbols=syms.txt $i | dot -Tpdf > images/$(basename $i '.fst').pdf
+done
+
 
 #3 - presents the output with the tokens concatenated (uses a different syms on the output)
 fst2word() {
@@ -66,6 +84,7 @@ for w in "NOV/19/2020"; do
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
     echo "$w = $res"
+    echo " "
 done
 
 trans=en2pt.fst
@@ -77,6 +96,7 @@ for w in "NOV/19/2020"; do
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
     echo "$w = $res"
+    echo " "
 done
 
 trans=datenum2text.fst
@@ -88,6 +108,7 @@ for w in "11/19/2020"; do
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
     echo "$w = $res"
+    echo " "
 done
 
 echo "The end"
