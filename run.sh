@@ -45,7 +45,7 @@ fstconcat compiled/tmp_monthday.fst compiled/year.fst | fstarcsort > compiled/da
 
 #9 
 
-fstcompose compiled/en2pt.fst compiled/pt2en.fst > compiled/enptaux.fst
+fstunion compiled/en2pt.fst compiled/pt2en.fst > compiled/enptaux.fst
 fstcompose compiled/enptaux.fst compiled/mix2numerical.fst > compiled/mixaux.fst
 fstcompose compiled/mixaux.fst compiled/datenum2text.fst > compiled/mix2text.fst
 
