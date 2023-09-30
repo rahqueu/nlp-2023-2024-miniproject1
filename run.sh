@@ -70,11 +70,11 @@ for w in "NOV/19/2020"; do
     echo "$w = $res"
 done
 
-trans=datenum2text.fst
+trans=en2pt.fst
 echo "***********************************************************"
-echo "Testing datenum2text  (output is a string  using 'syms-out.txt')"
+echo "Testing en2pt (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
-for w in "11/19/2020"; do
+for w in "NOV/19/2020"; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
