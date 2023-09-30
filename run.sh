@@ -43,6 +43,12 @@ fstconcat compiled/day.fst compiled/aux_slash3.fst | fstarcsort > compiled/tmp_d
 fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstarcsort > compiled/tmp_monthday.fst
 fstconcat compiled/tmp_monthday.fst compiled/year.fst | fstarcsort > compiled/datenum2text.fst
 
+#9 
+
+fstcompose compiled/en2pt.fst compiled/pt2en.fst > compiled/enptaux.fst
+fstcompose compiled/enptaux.fst compiled/mix2numerical.fst > compiled/mixaux.fst
+fstcompose compiled/mixaux.fst compiled/datenum2text.fst > compiled/mix2text.fst
+
 # ############ generate PDFs  ############
 echo "Starting to generate PDFs"
 for i in compiled/*.fst; do
