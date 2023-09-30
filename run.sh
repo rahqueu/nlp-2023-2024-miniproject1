@@ -19,7 +19,13 @@ fstconcat compiled/mmm2mm.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp
 fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstarcsort > compiled/tmp_monthday.fst # mes/ + dia/ = mes/dia/
 fstconcat compiled/tmp_monthday.fst compiled/aux_year.fst | fstarcsort > compiled/mix2numerical.fst # mes/dia/ + ano = mes/dia/ano
 
-#3
+#8
+
+fstconcat compiled/month.fst compiled/aux_slash2.fst | fstarcsort > compiled/tmp_month.fst
+fstconcat compiled/day.fst compiled/aux_slash3.fst | fstarcsort > compiled/tmp_day.fst
+fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstarcsort > compiled/tmp_monthday.fst
+fstconcat compiled/tmp_monthday.fst compiled/year.fst | fstarcsort > compiled/datenum2text.fst
+
 
 
 
@@ -42,6 +48,17 @@ echo "***********************************************************"
 echo "Testing mix2num  (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
 for w in "NOV/19/2020"; do
+    res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
+                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
+                       fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
+    echo "$w = $res"
+done
+
+trans=datenum2text.fst
+echo "***********************************************************"
+echo "Testing datenum2text  (output is a string  using 'syms-out.txt')"
+echo "***********************************************************"
+for w in "11/19/2020"; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
