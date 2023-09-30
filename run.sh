@@ -19,6 +19,18 @@ fstconcat compiled/mmm2mm.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp
 fstconcat compiled/tmp_month.fst compiled/tmp_day.fst | fstarcsort > compiled/tmp_monthday.fst # mes/ + dia/ = mes/dia/
 fstconcat compiled/tmp_monthday.fst compiled/aux_year.fst | fstarcsort > compiled/mix2numerical.fst # mes/dia/ + ano = mes/dia/ano
 
+# 3
+
+fstconcat compiled/month_pt2en.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp_pt2en1.fst
+fstconcat compiled/aux_day.fst compiled/aux_slash.fst | fstarcsort > compiled/tmp_pt2en2.fst
+fstconcat compiled/tmp_pt2en1.fst compiled/tmp_pt2en2.fst | fstarcsort > compiled/tmp_pt2en3.fst
+fstconcat compiled/tmp_pt2en3.fst compiled/aux_year.fst | fstarcsort > compiled/pt2en.fst
+
+# 4
+
+fstreverse compiled/pt2en.fst > compiled/en2pt.fst # not working for some reason...
+
+
 #8
 
 fstconcat compiled/month.fst compiled/aux_slash2.fst | fstarcsort > compiled/tmp_month.fst
