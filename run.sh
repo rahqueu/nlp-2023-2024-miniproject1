@@ -61,12 +61,14 @@ echo " "
 
 
 #1 - generates files
+echo "TESTING - METHOD 1"
+echo " "
 
 echo "***********************************************************"
-echo "Testing mix2numerical.fst (the output is a transducer: fst and pdf)"
+echo "Testing mix2text.fst (the output is a transducer: fst and pdf)"
 echo "***********************************************************"
-for w in compiled/t-*.fst; do
-    fstcompose $w compiled/mix2numerical.fst | fstshortestpath | fstproject --project_type=output |
+for w in compiled/t-*_mix.fst; do
+    fstcompose $w compiled/mix2text.fst | fstshortestpath | fstproject --project_type=output |
                   fstrmepsilon | fsttopsort > compiled/$(basename $w ".fst")-out.fst
 done
 for i in compiled/t-*-out.fst; do
@@ -77,15 +79,18 @@ done
 
 
 #3 - presents the output with the tokens concatenated (uses a different syms on the output)
+echo "TESTING - METHOD 3"
+echo " "
+
 fst2word() {
 	awk '{if(NF>=3){printf("%s",$3)}}END{printf("\n")}'
 }
 
 trans=mix2numerical.fst
 echo "***********************************************************"
-echo "Testing mix2num  (output is a string  using 'syms-out.txt')"
+echo "Testing mix2numerical  (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
-for w in "NOV/19/2020"; do
+for w in "NOV/19/2020" "JUN/28/2020"; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
@@ -97,7 +102,7 @@ trans=en2pt.fst
 echo "***********************************************************"
 echo "Testing en2pt (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
-for w in "NOV/19/2020"; do
+for w in "NOV/19/2020" "JUN/28/2020"; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
@@ -107,9 +112,21 @@ done
 
 trans=datenum2text.fst
 echo "***********************************************************"
-echo "Testing en2pt (output is a string  using 'syms-out.txt')"
+echo "Testing datenum2text (output is a string  using 'syms-out.txt')"
 echo "***********************************************************"
-for w in "11/19/2020"; do
+for w in "11/19/2020" "06/28/2020" "6/28/2020" "4/3/2001" "04/3/2001" "04/03/2001"; do
+    res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
+                       fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
+                       fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
+    echo "$w = $res"
+    echo " "
+done
+
+trans=mix2text.fst
+echo "***********************************************************"
+echo "Testing mix2text (output is a string  using 'syms-out.txt')"
+echo "***********************************************************"
+for w in "NOV/19/2020" "JUN/28/2020" "ABR/3/2001" "ABR/03/2001"; do
     res=$(python3 ./scripts/word2fst.py $w | fstcompile --isymbols=syms.txt --osymbols=syms.txt | fstarcsort |
                        fstcompose - compiled/$trans | fstshortestpath | fstproject --project_type=output |
                        fstrmepsilon | fsttopsort | fstprint --acceptor --isymbols=./scripts/syms-out.txt | fst2word)
